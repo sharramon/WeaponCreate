@@ -12,4 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2680c4e2b9765241888bed571dc11d2, type: 3}
   m_Name: Pose list
   m_EditorClassIdentifier: 
-  _handPoses: []
+  _handPoses:
+  - _poseName: 
+    _handChoice: 0
+    _mainHand:
+      fingerBendPast: []
+      fingerBendBelow: []
+    _offHand:
+      fingerBendPast: []
+      fingerBendBelow: []
+  - _poseName: 
+    _handChoice: 0
+    _mainHand:
+      fingerBendPast: []
+      fingerBendBelow: []
+    _offHand:
+      fingerBendPast: []
+      fingerBendBelow: []
