@@ -8,6 +8,7 @@ TagManager:
   - Fiero
   - Smoky
   - Object
+  - Back
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Grabbable
   - Hand
   - HandPlayer
-  - Sasuke
+  - FullMetal
   - 
   - 
   - 
