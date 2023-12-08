@@ -20,7 +20,7 @@ MonoBehaviour:
     x: 76
     y: -216
     width: 2358
-    height: 1980
+    height: 1982
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2732,7 +2732,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614804}
   m_ExposedName: Speed
   m_Exposed: 1
-  m_Order: 4
+  m_Order: 3
   m_Category: 
   m_Min:
     m_Type:
@@ -2812,7 +2812,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614806}
   m_ExposedName: Lifetime
   m_Exposed: 1
-  m_Order: 5
+  m_Order: 4
   m_Category: 
   m_Min:
     m_Type:
@@ -4517,7 +4517,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614856}
   m_ExposedName: NoisePower
   m_Exposed: 1
-  m_Order: 6
+  m_Order: 5
   m_Category: 
   m_Min:
     m_Type:
@@ -4775,7 +4775,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614863}
   m_ExposedName: ThicknessCurve
   m_Exposed: 1
-  m_Order: 7
+  m_Order: 6
   m_Category: 
   m_Min:
     m_Type:
@@ -5657,7 +5657,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614948}
   m_ExposedName: Circle
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 7
   m_Category: 
   m_Min:
     m_Type:
