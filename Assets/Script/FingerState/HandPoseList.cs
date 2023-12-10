@@ -57,7 +57,7 @@ namespace FullMetal
 
             for(int i = 0; i < handData.fingerBendBelow.Length; i++)
             {
-                if(handTracker.GetFingerCurl(handData.fingerBendBelow[i]._finger) < handData.fingerBendBelow[i]._bendValue)
+                if(handTracker.GetFingerCurl(handData.fingerBendBelow[i]._finger) > handData.fingerBendBelow[i]._bendValue)
                 {
                     return false;
                 }

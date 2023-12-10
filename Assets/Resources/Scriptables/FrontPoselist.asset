@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2680c4e2b9765241888bed571dc11d2, type: 3}
+  m_Name: FrontPoselist
+  m_EditorClassIdentifier: 
+  _handPoses:
+  - _poseName: Sword
+    _handChoice: 0
+    _mainHand:
+      fingerBendPast: []
+      fingerBendBelow:
+      - _bendValue: 0.2
+        _finger: 0
+      - _bendValue: 0.2
+        _finger: 1
+      - _bendValue: 0.2
+        _finger: 2
+      - _bendValue: 0.2
+        _finger: 3
+    _offHand:
+      fingerBendPast: []
+      fingerBendBelow:
+      - _bendValue: 0.2
+        _finger: 0
+      - _bendValue: 0.2
+        _finger: 1
+      - _bendValue: 0.2
+        _finger: 2
+      - _bendValue: 0.2
+        _finger: 3
+  - _poseName: Mace
+    _handChoice: 0
+    _mainHand:
+      fingerBendPast: []
+      fingerBendBelow:
+      - _bendValue: 0.1
+        _finger: 0
+      - _bendValue: 0.1
+        _finger: 1
+      - _bendValue: 0.1
+        _finger: 2
+      - _bendValue: 0.1
+        _finger: 3
+      - _bendValue: 0.1
+        _finger: 4
+    _offHand:
+      fingerBendPast:
+      - _bendValue: 0.7
+        _finger: 0
+      - _bendValue: 0.7
+        _finger: 0
+      - _bendValue: 0.7
+        _finger: 0
+      - _bendValue: 0.7
+        _finger: 0
+      - _bendValue: 0.7
+        _finger: 0
+      fingerBendBelow: []
