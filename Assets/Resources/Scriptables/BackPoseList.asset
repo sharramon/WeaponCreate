@@ -10,22 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2680c4e2b9765241888bed571dc11d2, type: 3}
-  m_Name: Pose list
+  m_Name: BackPoseList
   m_EditorClassIdentifier: 
   _handPoses:
-  - _poseName: Sword
+  - _poseName: Shield
     _handChoice: 0
     _mainHand:
       fingerBendPast: []
-      fingerBendBelow: []
+      fingerBendBelow:
+      - _bendValue: 0.2
+        _finger: 0
+      - _bendValue: 0.2
+        _finger: 1
+      - _bendValue: 0.2
+        _finger: 2
+      - _bendValue: 0.2
+        _finger: 3
     _offHand:
       fingerBendPast: []
-      fingerBendBelow: []
-  - _poseName: Mace
-    _handChoice: 0
-    _mainHand:
-      fingerBendPast: []
-      fingerBendBelow: []
-    _offHand:
-      fingerBendPast: []
-      fingerBendBelow: []
+      fingerBendBelow:
+      - _bendValue: 0.2
+        _finger: 0
+      - _bendValue: 0.2
+        _finger: 1
+      - _bendValue: 0.2
+        _finger: 2
+      - _bendValue: 0.2
+        _finger: 3
