@@ -4,14 +4,10 @@ using UnityEngine;
 using EzySlice;
 using UnityEngine.InputSystem;
 
-public class SliceObject : MonoBehaviour
+public class BasicSliceObject : MonoBehaviour
 {
-    public Transform startSlicePoint;
-    public Transform endSlicePoint;
-
-    public float minSliceVelocity = 1f;
-    public VelocityEstimator velocityEstimator;
-    public LayerMask sliceableLayer;
+    public Transform planeDebug;
+    public GameObject target;
 
     public Material crossSectionMaterial;
     public float cutForce = 2000f;
@@ -19,15 +15,14 @@ public class SliceObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if(Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer))
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            GameObject target = hit.transform.gameObject;
             Slice(target);
         }
     }
@@ -36,39 +31,20 @@ public class SliceObject : MonoBehaviour
     {
         Debug.Log("Sliced");
 
-        Vector3 velocity = velocityEstimator.GetVelocityEstimate();
+        CreateSliceQuad(planeDebug.position, planeDebug.up);
 
-        if (velocity.magnitude < minSliceVelocity)
+        SlicedHull hull = target.Slice(planeDebug.position, planeDebug.up);
+
+        if (hull != null)
         {
-            return;
-        }
-
-        Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
-        planeNormal.Normalize();
-
-        // Call the method to create the quad
-        //CreateSliceQuad(endSlicePoint.position, planeNormal);
-
-        SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
-
-        if(hull != null)
-        {
-            Debug.Log("Creating Upper and Lower");
-
             GameObject upperHull = hull.CreateUpperHull(target, crossSectionMaterial);
-            upperHull.name = "Upper Hull";
             SetupSlicedCompent(upperHull, 1f, 3f);
 
             GameObject lowerHull = hull.CreateLowerHull(target, crossSectionMaterial);
-            lowerHull.name = "Lower Hull";
             SetupSlicedCompent(lowerHull, 0, 10f);
+        }
 
-            Destroy(target);
-        }
-        else
-        {
-            Debug.Log("No Hull");
-        }
+        Destroy(target);
     }
 
     public void SetupSlicedCompent(GameObject slicedObject, float explosionForce, float mass)
@@ -78,8 +54,6 @@ public class SliceObject : MonoBehaviour
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
         rb.mass = mass;
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, explosionForce);
-
-        WeaponLayerManager.Instance.ChangeLayer(slicedObject, 0.5f, "Slice");
     }
 
     void CreateSliceQuad(Vector3 quadCenter, Vector3 planeNormal)
@@ -92,9 +66,6 @@ public class SliceObject : MonoBehaviour
 
         Mesh mesh = new Mesh();
         meshFilter.mesh = mesh;
-
-        Material material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-        material.color = Color.white;
 
         // Vertices and triangles as before
         Vector3[] vertices = new Vector3[4]
@@ -121,7 +92,5 @@ public class SliceObject : MonoBehaviour
         // Align quad normal with planeNormal and position it
         quad.transform.up = planeNormal;
         quad.transform.position = quadCenter;
-
-        quad.GetComponent<MeshRenderer>().material = material;
     }
 }

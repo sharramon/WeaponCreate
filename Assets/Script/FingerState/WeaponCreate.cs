@@ -147,7 +147,7 @@ namespace FullMetal
 
             float distance = Utils.FindDistanceOnLocalXZPlane(m_mainHand.transform, m_offHand.transform);
 
-            Debug.Log($"Distance between hands is {distance}");
+            //Debug.Log($"Distance between hands is {distance}");
 
             if (distance >= m_createHandDistance)
             {
