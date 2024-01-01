@@ -1,6 +1,7 @@
 using PhantoUtils;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
@@ -8,7 +9,6 @@ public class Longbow : MonoBehaviour
 {
     //
     private ArrowHand arrowHand;
-    private OVRHand hand;
 
     public Transform pivotTransform;
     public Transform handleTransform;
@@ -20,8 +20,8 @@ public class Longbow : MonoBehaviour
     public bool pulled;
 
     private float drawTension;
-    private const float minPull = 0.05f;
-    private const float maxPull = 0.5f;
+    private const float minPull = 0.01f;
+    private const float maxPull = 0.2f;
     private float nockDistanceTravelled = 0f;
     private float hapticDistanceThreshold = 0.01f;
     private float lastTickDistance;
@@ -31,7 +31,7 @@ public class Longbow : MonoBehaviour
     //arrow speed
     public float arrowMinVelocity = 3f;
     public float arrowMaxVelocity = 30f;
-    private float arrowVelocity = 30f;
+    private float arrowVelocity = 3f;
 
     //strain sound
     private float minStrainTickTime = 0.1f;
@@ -57,16 +57,21 @@ public class Longbow : MonoBehaviour
     public SoundPlayOneshot releaseSound;
     public SoundPlayOneshot nockSound;
 
-    private void OnAttachedToHand(OVRHand attachedHand)
+    private void FixedUpdate()
     {
-        hand = attachedHand;
+        BowUpdate();
+    }
+    public void SetArrowhand(ArrowHand _arrowHand)
+    {
+        arrowHand = _arrowHand;
+        //_arrowHand.arrowNockTransform = nockRestTransform;
     }
 
     private void BowUpdate()
     {
         if(nocked)
         {
-            Vector3 nockToarrowHand = arrowHand.arrowNockTransform.parent.position - nockTransform.position;
+            Vector3 nockToarrowHand = arrowHand.arrowNockTransform.parent.position - nockRestTransform.position;
 
             // Align bow
             // Time lerp value used for ramping into drawn bow orientation
@@ -80,17 +85,18 @@ public class Longbow : MonoBehaviour
             Vector3 pivotToLowerHandle = (handleTransform.position - pivotTransform.position).normalized;
 
             // Move nock position
+            Debug.Log($"The dot product is {Vector3.Dot(nockToarrowHand, -nockTransform.forward)}");
             if (Vector3.Dot(nockToarrowHand, -nockTransform.forward) > 0)
             {
                 float distanceToarrowHand = nockToarrowHand.magnitude * lerp;
 
-                nockTransform.localPosition = new Vector3(0f, 0f, Mathf.Clamp(-distanceToarrowHand, -maxPull, 0f));
+                nockTransform.localPosition = new Vector3(0f, 0f, (float)(Mathf.Clamp(-distanceToarrowHand, -maxPull, 0f) * (0.5 / maxPull)));
 
                 nockDistanceTravelled = -nockTransform.localPosition.z;
 
                 arrowVelocity = Util.RemapNumber(nockDistanceTravelled, minPull, maxPull, arrowMinVelocity, arrowMaxVelocity);
 
-                drawTension = Util.RemapNumberClamped(nockDistanceTravelled, 0, maxPull, 0f, 1f);
+                drawTension = Util.RemapNumberClamped(nockDistanceTravelled * (float)(maxPull / 0.5), 0, maxPull, 0f, 1f);
 
                 this.bowDrawLinearMapping.value = drawTension; // Send drawTension value to LinearMapping script, which drives the bow draw animation
 
@@ -105,8 +111,6 @@ public class Longbow : MonoBehaviour
 
                 if ((nockDistanceTravelled > (lastTickDistance + hapticDistanceThreshold)) || nockDistanceTravelled < (lastTickDistance - hapticDistanceThreshold))
                 {
-                    ushort hapticStrength = (ushort)Util.RemapNumber(nockDistanceTravelled, 0, maxPull, bowPullPulseStrengthLow, bowPullPulseStrengthHigh);
-
                     drawSound.PlayBowTensionClicks(drawTension);
 
                     lastTickDistance = nockDistanceTravelled;
@@ -147,6 +151,9 @@ public class Longbow : MonoBehaviour
 
     public void ArrowReleased()
     {
+        if (nocked == false)
+            return;
+
         nocked = false;
 
         if (releaseSound != null)
@@ -188,9 +195,8 @@ public class Longbow : MonoBehaviour
         Util.ResetTransform(nockTransform);
     }
 
-    public void StartNock(ArrowHand currentArrowHand)
+    public void StartNock()
     {
-        arrowHand = currentArrowHand;
         nocked = true;
         nockLerpStartTime = Time.time;
         nockLerpStartRotation = pivotTransform.rotation;

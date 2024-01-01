@@ -12,17 +12,15 @@ namespace Valve.VR.InteractionSystem
 	//-------------------------------------------------------------------------
 	public class Arrow : MonoBehaviour
 	{
-		public ParticleSystem glintParticle;
 		public Rigidbody arrowHeadRB;
 		public Rigidbody shaftRB;
-
-		public PhysicMaterial targetPhysMaterial;
 
 		private Vector3 prevPosition;
 		private Quaternion prevRotation;
 		private Vector3 prevVelocity;
 		private Vector3 prevHeadPosition;
 
+		[Header("Arrow Sounds")]
 		public SoundPlayOneshot airReleaseSound;
 		public SoundPlayOneshot hitTargetSound;
 
@@ -47,6 +45,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		void FixedUpdate()
 		{
+			
 			if ( released && inFlight )
 			{
 				prevPosition = transform.position;
@@ -55,21 +54,17 @@ namespace Valve.VR.InteractionSystem
 				prevHeadPosition = arrowHeadRB.transform.position;
 				travelledFrames++;
 			}
+			
 		}
 
 
 		//-------------------------------------------------
-		public void ArrowReleased( float inputVelocity )
+		public void ArrowReleased()
 		{
 			inFlight = true;
 			released = true;
 
 			airReleaseSound.Play();
-
-			if ( glintParticle != null )
-			{
-				glintParticle.Play();
-			}
 
 			
 			// Check if arrow is shot inside or too close to an object
@@ -83,7 +78,6 @@ namespace Valve.VR.InteractionSystem
 					return;
 				}
 			}
-			
 
 			travelledFrames = 0;
 			prevPosition = transform.position;
@@ -114,7 +108,7 @@ namespace Valve.VR.InteractionSystem
 			{
 				Rigidbody rb = GetComponent<Rigidbody>();
 				float rbSpeed = rb.velocity.sqrMagnitude;
-				bool canStick = ( targetPhysMaterial != null && collision.collider.sharedMaterial == targetPhysMaterial && rbSpeed > 0.2f );
+				bool canStick = rbSpeed > 0.2f;
 
 				if ( travelledFrames < 2 && !canStick )
 				{
@@ -128,11 +122,6 @@ namespace Valve.VR.InteractionSystem
 
 					travelledFrames = 0;
 					return;
-				}
-
-				if ( glintParticle != null )
-				{
-					glintParticle.Stop( true );
 				}
 
 				// Only play hit sounds if we're moving quickly
@@ -190,8 +179,6 @@ namespace Valve.VR.InteractionSystem
 					return;
 				}
 			}
-
-			Destroy( glintParticle );
 
 			inFlight = false;
 

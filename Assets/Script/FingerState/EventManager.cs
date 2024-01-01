@@ -9,7 +9,8 @@ namespace FullMetal
     {
         public delegate void TagTouchedDelegate(string tag, bool m_isLeft, GameObject gameObject);
         public TagTouchedDelegate _tagTouchedEvent;
-
+        public Action<bool,Bow> _bowCreatedEvent;
+        public Action<bool> _bowDestroyedEvent;
     }
 
 }
