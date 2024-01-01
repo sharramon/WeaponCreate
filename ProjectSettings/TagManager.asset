@@ -9,6 +9,7 @@ TagManager:
   - Smoky
   - Object
   - Back
+  - projectile
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - HandPlayer
   - FullMetal
   - Slice
-  - 
+  - Arrow
   - 
   - 
   - 

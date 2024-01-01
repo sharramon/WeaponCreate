@@ -1099,13 +1099,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6957274752996866843}
+  - component: {fileID: 5303849521902719489}
   m_Layer: 15
   m_Name: Bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6957274752996866843
 Transform:
   m_ObjectHideFlags: 0
@@ -1122,6 +1123,21 @@ Transform:
   - {fileID: 7733337584514865373}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5303849521902719489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4776806901408753621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aed8c0f997a9d5a479ad6e40362426cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_handInfo: {fileID: 0}
+  m_longBow: {fileID: 5318592225799924806}
+  m_arrowHand: {fileID: 0}
 --- !u!1 &5112297544708416579
 GameObject:
   m_ObjectHideFlags: 0
@@ -1151,9 +1167,9 @@ Transform:
   m_GameObject: {fileID: 5112297544708416579}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.017, y: 0, z: 0.24}
-  m_LocalScale: {x: 0.8152056, y: 0.8152056, z: 0.8152056}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0.069, y: 0, z: 0.24}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6244243523660923817}
   - {fileID: 4573901188507190238}
@@ -1228,7 +1244,7 @@ MonoBehaviour:
   arrowMinVelocity: 3
   arrowMaxVelocity: 30
   drawOffset: 0.06
-  bowDrawLinearMapping: {fileID: 0}
+  bowDrawLinearMapping: {fileID: 4581591258390436518}
   drawSound: {fileID: 6950224868933312483}
   arrowSlideSound: {fileID: 1854204345077289371}
   releaseSound: {fileID: 129567158404168583}

@@ -17,6 +17,10 @@ namespace FullMetal
         [SerializeField] private GameObject m_createEffect;
         [SerializeField] private float m_createHandDistance = .20f;
 
+        [Header("Hand info")]
+        [SerializeField] private HandInfo m_leftHandInfo;
+        [SerializeField] private HandInfo m_rightHandInfo;
+
         [Header("Weapons to create")]
         [SerializeField] private WeaponList m_weaponList;
 
@@ -213,6 +217,7 @@ namespace FullMetal
         {
             Debug.Log($"Creating weapon {weaponName} at {m_mainHand.gameObject.name}");
             GameObject weapon;
+            bool isLeft = false;
 
             if (m_mainHand.gameObject.name.Contains("(L)"))
             {
@@ -221,6 +226,7 @@ namespace FullMetal
 
                 m_instantedLeftWeapon = Instantiate(m_weaponList.GetWeapon(weaponName));
                 weapon = m_instantedLeftWeapon;
+                isLeft = true;
             }
             else
             {
@@ -229,6 +235,7 @@ namespace FullMetal
 
                 m_instantedRightWeapon = Instantiate(m_weaponList.GetWeapon(weaponName));
                 weapon = m_instantedRightWeapon;
+                isLeft = false;
             }
 
             //end the creation effect and reset the boolean
@@ -249,6 +256,16 @@ namespace FullMetal
             weapon.transform.localEulerAngles = Vector3.zero;
             //this is to account for the negative scale of the right hand. It's a workaround
             weapon.transform.localScale = new Vector3(1, 1, 1);
+            if(weapon.GetComponent<Weapon>() != null)
+            {
+                weapon.GetComponent<Weapon>().SetHandedness(isLeft);
+                weapon.GetComponent<Weapon>().SetHandInfo(isLeft ? m_leftHandInfo : m_rightHandInfo);
+            }
+            else
+            {
+                Debug.LogError("No Weapon component found in weapon");
+            }
+            weapon.SetActive(true);
         }
 
         /// <summary>

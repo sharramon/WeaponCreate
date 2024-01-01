@@ -65,3 +65,29 @@ MonoBehaviour:
       - _bendValue: 0.7
         _finger: 0
       fingerBendBelow: []
+  - _poseName: Bow
+    _handChoice: 0
+    _mainHand:
+      fingerBendPast: []
+      fingerBendBelow:
+      - _bendValue: 0.2
+        _finger: 0
+      - _bendValue: 0.2
+        _finger: 1
+      - _bendValue: 0.2
+        _finger: 2
+      - _bendValue: 0.2
+        _finger: 3
+      - _bendValue: 0.2
+        _finger: 4
+    _offHand:
+      fingerBendPast:
+      - _bendValue: 0.7
+        _finger: 2
+      - _bendValue: 0.7
+        _finger: 3
+      fingerBendBelow:
+      - _bendValue: 0.2
+        _finger: 0
+      - _bendValue: 0.2
+        _finger: 1
