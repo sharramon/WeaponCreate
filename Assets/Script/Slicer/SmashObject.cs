@@ -24,8 +24,14 @@ public class SmashObject : MonoBehaviour
 
         if (otherLayerMask == sliceableLayer.value)
         {
-            GameObject target = other.gameObject;
-            Smash(target);
+            if(other.gameObject.GetComponent<Sliceable>() != null)
+            {
+                if(other.gameObject.GetComponent<Sliceable>()._isSliceable == true)
+                {
+                    GameObject target = other.gameObject;
+                    Smash(target);
+                }
+            }
         }
     }
 

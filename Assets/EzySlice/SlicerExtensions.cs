@@ -21,6 +21,9 @@ namespace EzySlice {
         public static SlicedHull Slice(this GameObject obj, Vector3 position, Vector3 direction, TextureRegion textureRegion, Material crossSectionMaterial = null) {
             Plane cuttingPlane = new Plane();
 
+            if (obj == null)
+                return null;
+
             Matrix4x4 mat = obj.transform.worldToLocalMatrix;
             Matrix4x4 transpose = mat.transpose;
             Matrix4x4 inv = transpose.inverse;

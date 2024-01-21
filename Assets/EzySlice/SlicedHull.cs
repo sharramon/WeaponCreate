@@ -25,9 +25,11 @@ namespace EzySlice {
             GameObject newObject = CreateUpperHull();
 
             if (newObject != null) {
-                newObject.transform.localPosition = original.transform.localPosition;
-                newObject.transform.localRotation = original.transform.localRotation;
+                newObject.transform.position = original.transform.position;
+                newObject.transform.rotation = original.transform.rotation;
+                newObject.transform.parent = original.transform.parent;
                 newObject.transform.localScale = original.transform.localScale;
+                Debug.Log($"Local scale of original is {original.transform.localScale}, and local scale of new upper hull is {newObject.transform.localScale}");
 
                 Material[] shared = original.GetComponent<MeshRenderer>().sharedMaterials;
                 Mesh mesh = original.GetComponent<MeshFilter>().sharedMesh;
@@ -64,8 +66,9 @@ namespace EzySlice {
             GameObject newObject = CreateLowerHull();
 
             if (newObject != null) {
-                newObject.transform.localPosition = original.transform.localPosition;
-                newObject.transform.localRotation = original.transform.localRotation;
+                newObject.transform.position = original.transform.position;
+                newObject.transform.rotation = original.transform.rotation;
+                newObject.transform.parent = original.transform.parent;
                 newObject.transform.localScale = original.transform.localScale;
 
                 Material[] shared = original.GetComponent<MeshRenderer>().sharedMaterials;

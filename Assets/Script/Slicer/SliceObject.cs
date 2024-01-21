@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EzySlice;
 using UnityEngine.InputSystem;
+using FullMetal;
 
 public class SliceObject : MonoBehaviour
 {
@@ -27,8 +28,20 @@ public class SliceObject : MonoBehaviour
     {
         if(Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer))
         {
+            Debug.Log($"Got slice on {hit.transform.gameObject.name}");
             GameObject target = hit.transform.gameObject;
-            Slice(target);
+            if(target.GetComponent<Sliceable>() != null)
+            {
+                if(target.GetComponent<Sliceable>()._isSliceable == true)
+                {
+                    Slice(target);
+                    if(target.GetComponent<DummySliced>() != null)
+                    {
+                        target.GetComponent<DummySliced>().DummySlicedDead();
+                    }
+                }
+
+            }
         }
     }
 
@@ -80,6 +93,9 @@ public class SliceObject : MonoBehaviour
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, explosionForce);
 
         WeaponLayerManager.Instance.ChangeLayer(slicedObject, 0.5f, "Slice");
+
+        Sliceable sliceableComponent = slicedObject.AddComponent<Sliceable>(); // Add the component
+        sliceableComponent._isSliceable = true;
     }
 
     void CreateSliceQuad(Vector3 quadCenter, Vector3 planeNormal)

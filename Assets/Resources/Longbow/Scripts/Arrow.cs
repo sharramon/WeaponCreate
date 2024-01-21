@@ -6,6 +6,7 @@
 
 using UnityEngine;
 using System.Collections;
+using FullMetal;
 
 namespace Valve.VR.InteractionSystem
 {
@@ -109,8 +110,10 @@ namespace Valve.VR.InteractionSystem
 				Rigidbody rb = GetComponent<Rigidbody>();
 				float rbSpeed = rb.velocity.sqrMagnitude;
 				bool canStick = rbSpeed > 0.2f;
+                bool hitBalloon = collision.collider.gameObject.GetComponent<BalloonPop>() != null;
+				Debug.Log($"Hit collider {collision.collider.gameObject.name} and BalloonPop script found is {hitBalloon}");
 
-				if ( travelledFrames < 2 && !canStick )
+                if ( travelledFrames < 2 && !canStick )
 				{
 					// Reset transform but halve your velocity
 					transform.position = prevPosition - prevVelocity * Time.deltaTime;
@@ -134,6 +137,19 @@ namespace Valve.VR.InteractionSystem
                 {
                     collision.collider.gameObject.SendMessageUpwards("ApplyDamage", SendMessageOptions.DontRequireReceiver);
                     gameObject.SendMessage("HasAppliedDamage", SendMessageOptions.DontRequireReceiver);
+                }
+
+				if( hitBalloon )
+				{
+                    collision.collider.gameObject.GetComponent<BalloonPop>().BalloonHit();
+                    //collision.gameObject.GetComponent<BalloonEnemy>().PoppedBalloon();
+
+                    // Revert my physics properties cause I don't want balloons to influence my travel
+                    transform.position = prevPosition;
+                    transform.rotation = prevRotation;
+                    arrowHeadRB.velocity = prevVelocity;
+                    Physics.IgnoreCollision(arrowHeadRB.GetComponent<Collider>(), collision.collider);
+                    Physics.IgnoreCollision(shaftRB.GetComponent<Collider>(), collision.collider);
                 }
 
 				if ( canStick )
@@ -204,17 +220,13 @@ namespace Valve.VR.InteractionSystem
 			scaleParentObject = new GameObject( "Arrow Scale Parent" );
 			Transform parentTransform = collision.collider.transform;
 
-			// Don't do this for weebles because of how it has a fixed joint
-			ExplosionWobble wobble = collision.collider.gameObject.GetComponent<ExplosionWobble>();
-			if ( !wobble )
-			{
-				if ( parentTransform.parent )
-				{
-					parentTransform = parentTransform.parent;
-				}
-			}
+            // Don't do this for weebles because of how it has a fixed joint
+            if (parentTransform.parent)
+            {
+                parentTransform = parentTransform.parent;
+            }
 
-			scaleParentObject.transform.parent = parentTransform;
+            scaleParentObject.transform.parent = parentTransform;
 
 			// Move the arrow to the place on the target collider we were expecting to hit prior to the impact itself knocking it around
 			transform.parent = scaleParentObject.transform;

@@ -25,4 +25,32 @@ public class Utils : MonoBehaviour
 
         return distance;
     }
+
+    public static void LookAtOnXZPlane(Transform mainGameObject, Transform targetGameObject)
+    {
+        Vector3 targetPosition = targetGameObject.position;
+        targetPosition.y = mainGameObject.position.y;
+        Vector3 direction = targetPosition - mainGameObject.position;
+
+        // Check if the direction is not zero (the objects aren't at the same position).
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            mainGameObject.rotation = lookRotation;
+        }
+    }
+
+    public static void RotateTowardsOnXZPlane(Transform mainGameObject, Transform targetGameObject, float maxAngle)
+    {
+        Vector3 targetPosition = targetGameObject.position;
+        targetPosition.y = mainGameObject.position.y; // Adjust target position to be on the same horizontal plane
+        Vector3 direction = targetPosition - mainGameObject.position;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            // Rotate towards the target rotation by the specified maximum angle
+            mainGameObject.rotation = Quaternion.RotateTowards(mainGameObject.rotation, lookRotation, maxAngle);
+        }
+    }
 }
