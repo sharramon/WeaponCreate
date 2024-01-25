@@ -796,6 +796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c538d8c8e69964489da1dd106398aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _appearTransform: {x: 0, y: 0, z: 0}
   m_moveState: 0
   m_enemyState: 0
   m_walkSpeed: 1
@@ -817,7 +818,7 @@ MonoBehaviour:
   m_wheel: {fileID: 5458631934306928538}
   m_wheelAnimator: {fileID: 0}
   m_deathCountdown: 5
-  m_dynamiteTimer: 4
+  m_dynamiteTimer: 6
   m_disappearCountdown: 1
 --- !u!1 &6485374931881097203
 GameObject:

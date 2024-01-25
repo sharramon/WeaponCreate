@@ -13,6 +13,7 @@ public class SliceObject : MonoBehaviour
     public float minSliceVelocity = 1f;
     public VelocityEstimator velocityEstimator;
     public LayerMask sliceableLayer;
+    public AudioSource sliceSound;
 
     public Material crossSectionMaterial;
     public float cutForce = 2000f;
@@ -55,6 +56,9 @@ public class SliceObject : MonoBehaviour
         {
             return;
         }
+
+        if(sliceSound != null)
+            sliceSound.Play();
 
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
         planeNormal.Normalize();

@@ -12,6 +12,8 @@ namespace FullMetal
         public float m_lifeTime = 10f;
         public bool _isShot = false;
 
+        [SerializeField] private GameObject m_explodePrefab;
+
         private float m_currentLifeTime = 0f;
 
         private void Update()
@@ -26,6 +28,10 @@ namespace FullMetal
         private void OnCollisionEnter(Collision collision)
         {
             //collison logic here
+            if(collision.gameObject.tag == "Shield")
+            {
+                Shielded(collision);
+            }
         }
 
         private void GoToTarget()
@@ -56,6 +62,18 @@ namespace FullMetal
         private void HitPlayer()
         {
             Destroy(this.gameObject);
+        }
+
+        private void Shielded(Collision collision)
+        {
+            Explode(collision.contacts[0].normal, collision.gameObject.transform);
+            Destroy(this.gameObject);
+        }
+        private void Explode(Vector3 upVector, Transform parentTransform)
+        {
+            GameObject instantiatedObject = Instantiate(m_explodePrefab, transform.position, Quaternion.identity);
+            instantiatedObject.transform.right = upVector;
+            instantiatedObject.transform.parent = parentTransform;
         }
     }
 }

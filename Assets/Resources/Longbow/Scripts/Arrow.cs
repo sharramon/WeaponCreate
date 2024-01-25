@@ -69,16 +69,16 @@ namespace Valve.VR.InteractionSystem
 
 			
 			// Check if arrow is shot inside or too close to an object
-			RaycastHit[] hits = Physics.SphereCastAll( transform.position, 0.01f, transform.forward, 0.80f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore );
-			foreach ( RaycastHit hit in hits )
-			{
-				//I erased the player head collider from here. Might need again
-				if ( hit.collider.gameObject != gameObject && hit.collider.gameObject != arrowHeadRB.gameObject)
-				{
-					Destroy( gameObject );
-					return;
-				}
-			}
+			//RaycastHit[] hits = Physics.SphereCastAll( transform.position, 0.01f, transform.forward, 0.80f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore );
+			//foreach ( RaycastHit hit in hits )
+			//{
+			//	//I erased the player head collider from here. Might need again
+			//	if ( hit.collider.gameObject != gameObject && hit.collider.gameObject != arrowHeadRB.gameObject)
+			//	{
+			//		Destroy( gameObject );
+			//		return;
+			//	}
+			//}
 
 			travelledFrames = 0;
 			prevPosition = transform.position;

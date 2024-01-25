@@ -7,6 +7,7 @@ namespace FullMetal
     public class Cannonball : MonoBehaviour
     {
         [SerializeField] private HotAirEnemy m_balloonEnemy;
+        private GameObject m_explodePrefab;
         private float m_cannonballSpeed = 10f;
         private float m_cannonballLifeTime = 10f;
         private float m_cannonballLifeTimeTimer = 0f;
@@ -23,6 +24,15 @@ namespace FullMetal
         //        HitPlayer();
         //    }
         //}
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            //collison logic here
+            if (collision.gameObject.tag == "Shield")
+            {
+                Shielded(collision);
+            }
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -41,9 +51,25 @@ namespace FullMetal
             m_balloonEnemy = balloonEnemy;
         }
 
+        public void SetExplodePrefab(GameObject explodePrefab)
+        {
+            m_explodePrefab = explodePrefab;
+        }
+
         private void SetCannonBallSpeed(float speed)
         {
             m_cannonballSpeed = speed;
+        }
+        private void Shielded(Collision collision)
+        {
+            Explode(collision.contacts[0].normal, collision.gameObject.transform);
+            ReturnToPool();
+        }
+        private void Explode(Vector3 upVector, Transform parentTransform)
+        {
+            GameObject instantiatedObject = Instantiate(m_explodePrefab, transform.position, Quaternion.identity);
+            instantiatedObject.transform.up = upVector;
+            instantiatedObject.transform.parent = parentTransform;
         }
 
         public void ShootCannon(float speed)

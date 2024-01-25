@@ -26,10 +26,19 @@ namespace FullMetal
         private float m_golemSpawnTimer = 0f;
         private int m_golemSpawnCount = 0;
 
+        [Header("Balloons")]
+        [SerializeField] private GameObject m_balloonEnemyPrefab;
+        [SerializeField] private float m_balloonSpawnRadius = 5f;
+        [SerializeField] private float m_balloonSpawnRate = 6f;
+        [SerializeField] private int m_balloonMaxSpawn = 5;
+        private float m_balloonSpawnTimer = 0f;
+        private int m_balloonSpawnCount = 0;
+
         private void Update()
         {
             CheckIfSpawnWheel();
             CheckIfSpawnGolem();
+            CheckIfSpawnBalloon();
         }
 
         #region wheel dummy spawn
@@ -87,6 +96,7 @@ namespace FullMetal
         }
         #endregion
 
+        #region golem spawn
         private void CheckIfSpawnGolem()
         {
             if(m_golemSpawnTimer > m_golemSpawnRate)
@@ -142,6 +152,64 @@ namespace FullMetal
         public void GolemEnemyDestroyed()
         {
             m_golemSpawnCount--;
+        }
+        #endregion
+
+        private void CheckIfSpawnBalloon()
+        {
+            if (m_balloonSpawnTimer > m_balloonSpawnRate)
+            {
+                m_balloonSpawnTimer = 0;
+
+                if (m_balloonSpawnCount < m_balloonMaxSpawn)
+                {
+                    SpawnBalloon();
+                }
+            }
+
+            m_balloonSpawnTimer += Time.deltaTime;
+        }
+
+        private void SpawnBalloon()
+        {
+            Debug.Log("Started spawn golem");
+            Vector3? spawnPos = GetBalloonSpawnPos(m_spawnCenter);
+
+            if (spawnPos != null)
+            {
+                Debug.Log("Got spawn pos");
+                GameObject balloonEnemy = Instantiate(m_balloonEnemyPrefab, spawnPos.Value, Quaternion.identity);
+                Enemy enemy = balloonEnemy.GetComponent<Enemy>();
+                enemy.SetTargetTransform(m_playerTransform);
+                enemy._appearTransform = (Vector3)spawnPos;
+                enemy.SetEnemyState(EnemyState.Appearing);
+                m_balloonSpawnCount++;
+            }
+        }
+
+        private Vector3? GetBalloonSpawnPos(Transform centerTransform)
+        {
+            Vector2 randomPointOnCircle = Random.insideUnitCircle.normalized;
+            randomPointOnCircle *= m_balloonSpawnRadius;
+
+            Vector3 randomTarget = new Vector3(randomPointOnCircle.x, 1f, randomPointOnCircle.y);
+            Vector3 m_currentTargetPosition = randomTarget + centerTransform.position;
+
+            RaycastHit hit;
+            if (Physics.Raycast(m_currentTargetPosition, Vector3.down, out hit, 10f, m_floorLayer))
+            {
+                m_currentTargetPosition = hit.point;
+                return m_currentTargetPosition;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void BalloonEnemyDestroyed()
+        {
+            m_balloonSpawnCount--;
         }
     }
 }

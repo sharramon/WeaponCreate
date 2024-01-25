@@ -65,6 +65,10 @@ public class ArrowHand : MonoBehaviour
     public void SetBow(Longbow _bow)
     {
         bow = _bow;
+
+        if (_bow == null)
+            return;
+
         arrowNockBowTransform = _bow.nockTransform;
     }
 

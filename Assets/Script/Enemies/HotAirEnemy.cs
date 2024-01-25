@@ -21,6 +21,10 @@ namespace FullMetal
         [SerializeField] private GameObject m_cannonBall;
         [SerializeField] private float m_cannonShootInterval = 2f;
         [SerializeField] private float m_cannonShootSpeed = 10f;
+        [SerializeField] private AudioSource m_shootAudio;
+
+        [Header("Cannonball")]
+        [SerializeField] private GameObject m_explosion;
 
         private Coroutine m_shootCannonCoroutine;
 
@@ -119,6 +123,7 @@ namespace FullMetal
             cannonBallObject.SetActive(false);
             Cannonball cannonball = cannonBallObject.AddComponent<Cannonball>();
             cannonball.SetBallonEnemy(this);
+            cannonball.SetExplodePrefab(m_explosion);
             m_cannonPool.Add(cannonBallObject);
 
             return cannonBallObject;
@@ -141,7 +146,7 @@ namespace FullMetal
             cannonBall.transform.rotation = Quaternion.LookRotation(playerHead.transform.position - m_cannonBarrel.position);
             cannonBall.GetComponent<Cannonball>().ShootCannon(m_cannonShootSpeed);
             //Vector3 direction = playerHead.transform.position - m_cannonBarrel.position;
-
+             m_shootAudio.Play();
         }
 
         public void PoppedBalloon()

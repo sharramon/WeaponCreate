@@ -24,6 +24,10 @@ namespace FullMetal
         [Header("Weapons to create")]
         [SerializeField] private WeaponList m_weaponList;
 
+        [Header("Refactory Period")]
+        [SerializeField] private float m_refactoryPeriod = 0.5f;
+        private bool m_isRefactory = false;
+
         private GameObject m_mainHand;
         private GameObject m_offHand;
         private Coroutine m_countdownFailureCoroutine;
@@ -78,10 +82,21 @@ namespace FullMetal
         }
         private void CreateWeaponTrigger(bool m_isLeft, GameObject gameObject)
         {
+            if (m_isRefactory == true)
+                return;
+
+            StartCoroutine(StartRefactoryPeriod());
+
             if (m_isCurrentlyCreating == true)
             {
                 if(m_offHand != null && (m_offHand == m_leftHandTracker.gameObject) == m_isLeft)
                 {
+                    if(m_instantiatedCreateEffect != null)
+                        Destroy(m_instantiatedCreateEffect);
+
+                    m_isCurrentlyCreating = false;
+                    m_offHand = null;
+                    m_mainHand = null;
                     return;
                 }
                 else
@@ -109,6 +124,13 @@ namespace FullMetal
                 m_offHand = m_rightHandTracker.gameObject;
                 m_mainHand = m_leftHandTracker.gameObject;
             }
+        }
+
+        private IEnumerator StartRefactoryPeriod()
+        {
+            m_isRefactory = true;
+            yield return new WaitForSeconds(m_refactoryPeriod);
+            m_isRefactory = false;
         }
 
         private void WeaponCreateEffect(bool m_isLeft, GameObject handObject)
@@ -185,13 +207,13 @@ namespace FullMetal
 
             _angle = angle;
             //Debug.Log();
-            if (angle < 45f)
+            if (angle < 60f)
             {
                 Debug.Log("Angle is below 45");
                 CheckFrontHandPoseLists(m_frontHandPoseList.GetHandPoses());
             }
 
-            if (angle > 135f)
+            if (angle > 120f)
             {
                 Debug.Log("Angle is above 135");
                 CheckFrontHandPoseLists(m_backHandPoseList.GetHandPoses());

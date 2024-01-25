@@ -81,6 +81,7 @@ namespace FullMetal
             energyball._isShot = true;
         }
 
+
         protected override void Dead()
         {
             StartCoroutine(DeathCountdown());

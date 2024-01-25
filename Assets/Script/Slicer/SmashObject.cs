@@ -15,6 +15,7 @@ public class SmashObject : MonoBehaviour
     public int cutCount = 5;
     public float distanceToSmash = 0.1f;
     public float cutForce = 500f;
+    public AudioSource smashSound;
 
     private List<GameObject> objectsToSmash = new List<GameObject>();
 
@@ -47,6 +48,9 @@ public class SmashObject : MonoBehaviour
         }
 
         Debug.Log("Velocity Passed");
+
+        if(smashSound != null)
+            smashSound.Play();
 
         Vector3 smashPos = transform.position + velocity.normalized * distanceToSmash;
         objectsToSmash.Add(target);

@@ -11,6 +11,7 @@ TagManager:
   - Back
   - projectile
   - Floor
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -33,7 +34,7 @@ TagManager:
   - Cannon
   - Smash
   - Floor
-  - 
+  - Shield
   - 
   - 
   - 
